@@ -42,13 +42,11 @@ export default function LoginPage() {
       .map((s) => s.charAt(0).toUpperCase() + s.slice(1))
       .join(' ')
 
-    login({
-      id: crypto.randomUUID(),
-      name,
-      email: data.email,
-    })
+    login(
+      { id: crypto.randomUUID(), name, email: data.email },
+      `mock-jwt-token-${crypto.randomUUID()}`
+    )
 
-    console.log('Login:', data)
     toast.success('Login successful')
     router.push('/dashboard')
   }

@@ -33,6 +33,7 @@ let cachedRaw: string | null = null
 let cachedUser: User | null = null
 
 function getSnapshot(): User | null {
+  if (typeof window === 'undefined') return null
   const raw = localStorage.getItem(STORAGE_KEY_USER)
   if (raw !== cachedRaw) {
     cachedRaw = raw

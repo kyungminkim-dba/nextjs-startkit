@@ -21,7 +21,14 @@ apiClient.interceptors.response.use(
   (error: AxiosError) => {
     if (error.response?.status === 401) {
       if (typeof window !== 'undefined') {
-        window.location.href = '/login'
+        const isAuthPage =
+          window.location.pathname.startsWith('/login') ||
+          window.location.pathname.startsWith('/register')
+        if (!isAuthPage) {
+          localStorage.removeItem('auth_token')
+          localStorage.removeItem('auth_user')
+          window.location.href = '/login'
+        }
       }
     }
     return Promise.reject(error)

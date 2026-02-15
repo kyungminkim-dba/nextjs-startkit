@@ -42,13 +42,11 @@ export default function RegisterPage() {
   })
 
   function onSubmit(data: FormValues) {
-    login({
-      id: crypto.randomUUID(),
-      name: data.name,
-      email: data.email,
-    })
+    login(
+      { id: crypto.randomUUID(), name: data.name, email: data.email },
+      `mock-jwt-token-${crypto.randomUUID()}`
+    )
 
-    console.log('Register:', data)
     toast.success('Account created successfully')
     router.push('/dashboard')
   }
