@@ -2,7 +2,7 @@
 
 import Link from 'next/link'
 import { usePathname, useRouter } from 'next/navigation'
-import { LayoutDashboard, Settings, Home } from 'lucide-react'
+import { LayoutDashboard, Settings, Home, type LucideIcon } from 'lucide-react'
 import { useAuth } from '@/hooks/use-auth'
 import { UserMenu } from '@/components/composites/user-menu'
 import {
@@ -17,12 +17,12 @@ import {
   SidebarFooter,
   SidebarHeader,
 } from '@/components/ui/sidebar'
-import { SITE_CONFIG } from '@/lib/constants'
+import { SITE_CONFIG, DASHBOARD_NAV_ITEMS } from '@/lib/constants'
 
-const SIDEBAR_ITEMS = [
-  { title: 'Dashboard', url: '/dashboard', icon: LayoutDashboard },
-  { title: 'Settings', url: '/dashboard/settings', icon: Settings },
-]
+const ICON_MAP: Record<string, LucideIcon> = {
+  LayoutDashboard,
+  Settings,
+}
 
 export function AppSidebar() {
   const pathname = usePathname()
@@ -50,16 +50,22 @@ export function AppSidebar() {
           <SidebarGroupLabel>Application</SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>
-              {SIDEBAR_ITEMS.map((item) => (
-                <SidebarMenuItem key={item.title}>
-                  <SidebarMenuButton asChild isActive={pathname === item.url}>
-                    <Link href={item.url}>
-                      <item.icon />
-                      <span>{item.title}</span>
-                    </Link>
-                  </SidebarMenuButton>
-                </SidebarMenuItem>
-              ))}
+              {DASHBOARD_NAV_ITEMS.map((item) => {
+                const Icon = ICON_MAP[item.icon]
+                return (
+                  <SidebarMenuItem key={item.title}>
+                    <SidebarMenuButton
+                      asChild
+                      isActive={pathname === item.href}
+                    >
+                      <Link href={item.href}>
+                        {Icon && <Icon />}
+                        <span>{item.title}</span>
+                      </Link>
+                    </SidebarMenuButton>
+                  </SidebarMenuItem>
+                )
+              })}
             </SidebarMenu>
           </SidebarGroupContent>
         </SidebarGroup>
